@@ -64,9 +64,7 @@ static final DoFn<String, Mutation> MUTATION_TRANSFORM = new DoFn<String, Mutati
 		 	CSVParser csvParser = new CSVParser();
  		String[] parts = csvParser.parseLine(line);
 		
-			Put put_object=null;
-      			if(row_id>1)
-			{
+			
    				put_object = new Put(Bytes.toBytes(row_id));
      			    	byte[] data = Bytes.toBytes( parts[0]);
    			put_object.addColumn(FAMILY, beneficiry_id,data);
@@ -93,8 +91,6 @@ static final DoFn<String, Mutation> MUTATION_TRANSFORM = new DoFn<String, Mutati
 			put_object.addColumn(FAMILY, BENE_HMO_CVRAGE_TOT_MONS, Bytes.toBytes(parts[10]));
 			put_object.addColumn(FAMILY, PLAN_CVRG_MOS_NUM, Bytes.toBytes(parts[11]));
 			
-			}
-			row_id = row_id +1;	
 			c.output(put_object);
   }
 };
