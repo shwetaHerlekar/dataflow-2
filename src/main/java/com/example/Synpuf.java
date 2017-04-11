@@ -64,14 +64,10 @@ static final DoFn<String, Mutation> MUTATION_TRANSFORM = new DoFn<String, Mutati
 		 	CSVParser csvParser = new CSVParser();
  		String[] parts = csvParser.parseLine(line);
 		
-      			if(row_id==1)
+			Put put_object=null;
+      			if(row_id>1)
 			{
-				row_id = row_id+1;
-				col_names=parts;
-			}
-       			else{
-   				Put put_object = new Put(Bytes.toBytes(row_id));
-				row_id = row_id +1;	
+   				put_object = new Put(Bytes.toBytes(row_id));
      			    	byte[] data = Bytes.toBytes( parts[0]);
    			put_object.addColumn(FAMILY, beneficiry_id,data);
  			put_object.addColumn(FAMILY, death_date, Bytes.toBytes(parts[2]));
@@ -97,8 +93,9 @@ static final DoFn<String, Mutation> MUTATION_TRANSFORM = new DoFn<String, Mutati
 			put_object.addColumn(FAMILY, BENE_HMO_CVRAGE_TOT_MONS, Bytes.toBytes(parts[10]));
 			put_object.addColumn(FAMILY, PLAN_CVRG_MOS_NUM, Bytes.toBytes(parts[11]));
 			
-			c.output(put_object);
 			}
+			row_id = row_id +1;	
+			c.output(put_object);
   }
 };
 		
@@ -108,7 +105,7 @@ static final DoFn<String, Mutation> MUTATION_TRANSFORM = new DoFn<String, Mutati
 	{
 		// config object for writing to bigtable
 
-		CloudBigtableScanConfiguration config = new CloudBigtableScanConfiguration.Builder().withProjectId("healthcare-12").withInstanceId("hc-dataset").withTableId("synpuf-data1").build();
+		CloudBigtableScanConfiguration config = new CloudBigtableScanConfiguration.Builder().withProjectId("healthcare-12").withInstanceId("hc-dataset").withTableId("synpuf-data").build();
 
 		// Start by defining the options for the pipeline.
 		
