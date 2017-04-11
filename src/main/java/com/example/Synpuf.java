@@ -118,11 +118,11 @@ static final DoFn<String, Mutation> MUTATION_TRANSFORM = new DoFn<String, Mutati
 		// Then create the pipeline.
 		Pipeline p = Pipeline.create(options);
 			CloudBigtableIO.initializeForWrite(p);
-p.apply(TextIO.Read.named("Reading from File").from("gs://synpuf_data/DE1_0_2008_Beneficiary_Summary_File_Sample_1.csv")).apply(ParDo.named("Processing Synpuf data").of(MUTATION_TRANSFORM)).apply(CloudBigtableIO.writeToTable(config));
+p.apply(TextIO.Read.named("Reading from File").from("gs://synpuf_data/Book1.csv")).apply(ParDo.named("Processing Synpuf data").of(MUTATION_TRANSFORM)).apply(CloudBigtableIO.writeToTable(config));
 	
 		p.run();
 
-		//PCollection<String> lines=p.apply(TextIO.Read.from("gs://synpuf-data/DE1_0_2008_Beneficiary_Summary_File_Sample_1.csv"))
+		//PCollection<String> lines=p.apply(TextIO.Read.from("gs://synpuf-data/Book1.csv"))
 		//PCollection<String> fields = lines.apply(ParDo.of(new ExtractFieldsFn()));
 		//p.apply(TextIO.Write.to("gs://synpuf-data/temp.txt"));
 	}
