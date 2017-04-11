@@ -52,7 +52,6 @@ public class Synpuf
 
     private static long row_id = 1;
     //private static final byte[] SEX = Bytes.toBytes("sex");
-    public static String col_names[];
 
 static final DoFn<String, Mutation> MUTATION_TRANSFORM = new DoFn<String, Mutation>() {
   private static final long serialVersionUID = 1L;
@@ -65,7 +64,7 @@ static final DoFn<String, Mutation> MUTATION_TRANSFORM = new DoFn<String, Mutati
  		String[] parts = csvParser.parseLine(line);
 		
 			
-   				put_object = new Put(Bytes.toBytes(row_id));
+   				Put put_object = new Put(Bytes.toBytes(row_id));
      			    	byte[] data = Bytes.toBytes( parts[0]);
    			put_object.addColumn(FAMILY, beneficiry_id,data);
  			put_object.addColumn(FAMILY, death_date, Bytes.toBytes(parts[2]));
@@ -115,7 +114,7 @@ static final DoFn<String, Mutation> MUTATION_TRANSFORM = new DoFn<String, Mutati
 		// Then create the pipeline.
 		Pipeline p = Pipeline.create(options);
 			CloudBigtableIO.initializeForWrite(p);
-p.apply(TextIO.Read.named("Reading from File").from("gs://synpuf_data/Book1.csv")).apply(ParDo.named("Processing Synpuf data").of(MUTATION_TRANSFORM)).apply(CloudBigtableIO.writeToTable(config));
+p.apply(TextIO.Read.named("Reading from File").from("gs://synpuf_data/DE1_0_2008_Beneficiary_Summary_File_Sample_1.csv")).apply(ParDo.named("Processing Synpuf data").of(MUTATION_TRANSFORM)).apply(CloudBigtableIO.writeToTable(config));
 	
 		p.run();
 
