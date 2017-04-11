@@ -52,7 +52,7 @@ public class Synpuf
 
     private static long row_id = 1;
     //private static final byte[] SEX = Bytes.toBytes("sex");
-    String col_names[];
+    public static String col_names[];
 
 static final DoFn<String, Mutation> MUTATION_TRANSFORM = new DoFn<String, Mutation>() {
   private static final long serialVersionUID = 1L;
